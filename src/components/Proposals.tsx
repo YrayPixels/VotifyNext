@@ -14,6 +14,10 @@ export default function Proposals() {
   const url = new URL(window.location.href);
 
   const proposalId = url.searchParams.get('id');
+  const [notify, setNotify] = useState({
+    message: '',
+    type: ''
+  })
 
   const [proposalItem, setProposalItem] = useState<any>(null)
 
@@ -52,13 +56,47 @@ export default function Proposals() {
       return;
     }
     try {
-      const tx = await castVote(index, anchorProgram, publicKey.toString())
-      if (signTransaction) {
-        await signTransaction(tx)
-        // wallet.makeRefetch()
+      const tx = await castVote(index, anchorProgram, publicKey.toString(), connection)
+      if (signTransaction == null) {
+        return;
+      }
+      let result = await signTransaction(tx);
+      if (result) {
+        setNotify({
+          message: 'Vote Recorded Successfully',
+          type: 'success'
+        })
+        setTimeout(() => {
+          setNotify({
+            message: "",
+            type: ''
+          })
+        }, 2000)
+      } else {
+        setNotify({
+          message: 'An Error has occurred',
+          type: 'error'
+        })
+        setTimeout(() => {
+          setNotify({
+            message: "",
+            type: ''
+          })
+        }, 2000)
       }
 
+
     } catch (err) {
+      setNotify({
+        message: `${err}`,
+        type: 'error'
+      })
+      setTimeout(() => {
+        setNotify({
+          message: "",
+          type: ''
+        })
+      }, 2000)
       console.log(err);
     }
 
@@ -71,7 +109,16 @@ export default function Proposals() {
 
     <main className="pt-[3rem] pb-[5rem] text-white">
 
+      <div className="flex flex-row justify-center items-center">
+
+        {notify.type !== '' &&
+          <div className={`${notify.type == "success" ? 'bg-green-500' : "bg-red-500"} w-[400px] shadow rounded-lg z-50 p-3 absolute top-20`}>
+            <p className='text-center'>{notify.message}</p>
+          </div>
+        }
+      </div>
       <div className="mb-3 grid grid-cols-3 gap-x-2">
+
 
         <div className="flex flex-col col-span-2  space-y-4">
 
@@ -83,7 +130,7 @@ export default function Proposals() {
                 View full Proposal
               </Link>
 
-              <button onClick={() => setStartAi(true)} className="p-3 text-[#73dca5] rounded-xl text-[1.5rem] font-semibold border border-[#73dca5]">
+              <button onClick={() => setStartAi(true)} className="p-3 text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
                 Analyze with AI
               </button>
             </div>
@@ -98,7 +145,7 @@ export default function Proposals() {
             <div className="py-5 flex justify-between ">
               {proposalItem && proposalItem?.options?.map((vote: any, index: number) => {
                 return (
-                  <button onClick={() => voting(index)} key={index} className="py-2 border border-[#73dca5] rounded-xl p-2 text-[#73dca5]">
+                  <button onClick={() => voting(index)} key={index} className="py-2 text-[14px] w-fit border border-[#73dca5] rounded-xl p-2 text-[#73dca5]">
                     {vote}
                   </button>
                 )

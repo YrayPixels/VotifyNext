@@ -86,8 +86,10 @@ export default function Main() {
         user: publicKey.toString(),
         program: anchorProgram,
       })
-
-      await signTransaction(tx)
+      // tx.feePayer = new PublicKey(publicKey.toString);
+      // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      // console.log(tx);
+      // await signTransaction(tx)
 
       setNotify({
         message: 'Proposal created successfully',
@@ -126,7 +128,7 @@ export default function Main() {
         </p>
         <div className="flex flex-row  p-2 justify-center gap-x-2">
 
-          <button onClick={() => setNewProp(true)} className="p-3  shadow text-[#73dca5] rounded-xl text-[1.5rem] font-semibold border border-[#73dca5]">
+          <button onClick={() => setNewProp(true)} className="p-3  shadow text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
             Create New Proposal
           </button>
         </div>
@@ -135,7 +137,7 @@ export default function Main() {
 
       {newProp &&
         <div className="absolute top-0 h-[600px] w-screen left-0 flex flex-col justify-center items-center bg-black/95">
-          <div className="border border-[#73dca5] w-[50%] rounded-xl p-4">
+          <div className="border border-[#73dca5] w-10/12 w-lg-[50%] rounded-xl p-4">
             <CustomInput
               type="text"
               placeholder="enter proposal title"
@@ -160,17 +162,17 @@ export default function Main() {
                 onChange={(e) => setOption(e.target.value)}
                 placeholder="Add Options"
                 addOnEnd={
-                  <button type="button" onClick={() => addOption()} className="p-3 w-full mt-3  shadow text-[#73dca5] rounded-xl text-[1.5rem] font-semibold border border-[#73dca5]">
+                  <button type="button" onClick={() => addOption()} className="p-3 w-full mt-3  shadow text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
                     Add
                   </button>}
               />
 
             </div>
             <div>
-              <button onClick={() => createNewProposal()} className="p-3 w-full mt-3  shadow text-[#73dca5] rounded-xl text-[1.5rem] font-semibold border border-[#73dca5]">
+              <button onClick={() => createNewProposal()} className="p-3 w-full mt-3  shadow text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
                 Create
               </button>
-              <button onClick={() => setNewProp(false)} className="p-3 w-full mt-3  shadow text-red-500 rounded-xl text-[1.5rem] font-semibold border border-red-500">
+              <button onClick={() => setNewProp(false)} className="p-3 w-full mt-3  shadow text-red-500 rounded-xl text-[14px] font-semibold border border-red-500">
                 Cancel
               </button>
             </div>

@@ -1,5 +1,5 @@
 import { BN, Program } from "@project-serum/anchor"
-import { PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 
 
 export const fetchProposals = async (program: Program) => {
@@ -38,7 +38,7 @@ export const fetchProposals = async (program: Program) => {
 
 // }
 
-export const castVote = async (index: number, program: Program, user: string) => {
+export const castVote = async (index: number, program: Program, user: string, connection: Connection) => {
 
 
     const userPubkey = new PublicKey(user)
@@ -72,6 +72,8 @@ export const castVote = async (index: number, program: Program, user: string) =>
 
     tx.add(regInstruction)
     tx.add(votingtx)
+    tx.feePayer = new PublicKey(userPubkey);
+    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
     return tx;
 
 }
@@ -125,7 +127,7 @@ export const newProposal = async ({ title, description, options, externalLink, u
             dao: new PublicKey("8fEQu9YTUjMhNsYF7bGTn8WYdewhhrMSPQxyCbHmNkNJ"),
             proposal: proposalPDA,
             user: new PublicKey(user),
-        }).transaction()
+        }).rpc()
 
     return txHash;
 }

@@ -9,16 +9,15 @@ import ChatBox from "./ChatBox";
 
 export default function AiBot({ setStartAi }: any) {
 
-
     const [messageText, setMessageText] = useState('')
     const [newText, setNewText] = useState('');
     const [loader, setLoader] = useState(false);
-    const history = JSON.parse(localStorage.getItem('mobotChatHistory')) || [];
+    const history = JSON.parse(localStorage.getItem('mobotChatHistory') || "") || [];
     let messageCreatorObj = {
 
         mainMessage: [],
 
-        createsNewUserMessage: function (user_message) {
+        createsNewUserMessage: function (user_message: string) {
             let newMessage = [
                 {
                     role: "user",

@@ -11,9 +11,16 @@ import Link from "next/link";
 const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
 export default function Proposals() {
-  const url = new URL(window.location.href);
+  const [proposalId, setProposalId] = useState("")
 
-  const proposalId = url.searchParams.get('id');
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const Id = url.searchParams.get('id');
+    if (Id) {
+      setProposalId(Id);
+    }
+  }, [])
+
   const [notify, setNotify] = useState({
     message: '',
     type: ''

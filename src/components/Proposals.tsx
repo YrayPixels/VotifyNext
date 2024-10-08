@@ -65,6 +65,7 @@ export default function Proposals() {
         setNotify({
           message: 'Vote Recorded Successfully',
           type: 'success'
+
         })
         setTimeout(() => {
           setNotify({

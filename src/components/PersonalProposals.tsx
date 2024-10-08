@@ -32,7 +32,7 @@ export default function Main() {
     }
     (async () => {
 
-      const helius = new Helius(process.env.NEXT_REACT_HELIUS_API || "");
+      const helius = new Helius(process.env.NEXT_PUBLIC_HELIUS_API || "");
       const response = await helius.rpc.getAssetsByOwner({
         ownerAddress: walletAddress,
         page: 1,

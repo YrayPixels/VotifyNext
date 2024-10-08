@@ -1,7 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
-const genAI = new GoogleGenerativeAI(process.env.VITE_REACT_GA_KEY);
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GA_KEY || "");
+
 
 export async function runGenAi(message: any) {
     // For text-only input, use the gemini-pro model
@@ -55,39 +56,22 @@ export const isJson = (str: any) => {
 }
 
 
-export async function scrapeProposal(url) {
+export async function scrapeProposal(url: string) {
     try {
-        // Fetch the HTML of the webpage
-        const response = await fetch(url);
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const response = await fetch(proxyUrl + url);
         const data = await response.text();
-
-
-        console.log(data);
-        // Load the HTML into cheerio for parsing
-        // const $ = cheerio.load(data);
-
-        // // Define the data you want to extract
-        // const proposalTitle = $('h1').text().trim(); // Adjust selector based on structure
-        // const proposalContent = $('article').text().trim(); // Adjust based on actual HTML structure
-
-        // // You can extract other specific elements similarly by inspecting the page
-        // console.log('Title:', proposalTitle);
-        // console.log('Content:', proposalContent);
-
-        // // Return the extracted data
-        // return {
-        //     title: proposalTitle,
-        //     content: proposalContent,
-        // };
+        return data;
     } catch (error) {
         console.error('Error scraping the proposal:', error);
+        return "";
     }
 }
 
-// URL of the page you want to scrape
-const url = 'https://www.jupresear.ch/t/jup-juice-work-group-jjwg-trial-proposal/22159';
+// // URL of the page you want to scrape
+// const url = 'https://www.jupresear.ch/t/jup-juice-work-group-jjwg-trial-proposal/22159';
 
-// Call the function to scrape the data
-scrapeProposal(url).then((data) => {
-    console.log(data);
-});
+// // Call the function to scrape the data
+// scrapeProposal(url).then((data) => {
+//     console.log(data);
+// });

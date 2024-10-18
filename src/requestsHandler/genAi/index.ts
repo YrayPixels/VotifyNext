@@ -56,16 +56,34 @@ export const isJson = (str: any) => {
 }
 
 
+// export async function scrapeProposal(url: string) {
+//     try {
+//         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+//         const response = await fetch(proxyUrl + url);
+//         const data = await response.text();
+//         return data;
+//     } catch (error) {
+//         console.error('Error scraping the proposal:', error);
+//         return "";
+//     }
+// }
+
+
 export async function scrapeProposal(url: string) {
-    try {
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const response = await fetch(proxyUrl + url);
-        const data = await response.text();
-        return data;
-    } catch (error) {
-        console.error('Error scraping the proposal:', error);
-        return "";
+    const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to scrape content');
     }
+
+    const data = await response.json();
+    return JSON.stringify(data.content);
 }
 
 // // URL of the page you want to scrape

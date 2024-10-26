@@ -46,7 +46,7 @@ export default function Proposals() {
       const programId = new PublicKey("AvxgDjZnQSYYhMCu8fCcRG7NMevifPp4yC8y8KfjMYfy");
       const program = new Program<DaoVoting>(IDL, programId, anchorProvider);
 
-      if (proposalId == null) {
+      if (proposalId == null || proposalId === "") {
         return;
       }
       const proposal = await program.account.proposal.fetch(proposalId);
@@ -54,7 +54,7 @@ export default function Proposals() {
       console.log(proposal);
       setAnchorProgram(program)
     })()
-  }, [publicKey, wallet, anchorWallet])
+  }, [publicKey, wallet, anchorWallet, proposalId])
 
 
   const voting = async (index: number) => {

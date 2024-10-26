@@ -109,6 +109,7 @@ export default function Main() {
       options: [...prevState.options, option], // Add the new option to the options array
     }));
   }
+
   return (
 
     <main className="pt-[3rem] pb-[5rem] text-white">

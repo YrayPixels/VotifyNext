@@ -51,7 +51,6 @@ export default function Proposals() {
       }
       const proposal = await program.account.proposal.fetch(proposalId);
       setProposalItem(proposal)
-      console.log(proposal);
       setAnchorProgram(program)
     })()
   }, [publicKey, wallet, anchorWallet, proposalId])
@@ -179,7 +178,7 @@ export default function Proposals() {
       {startAi &&
         <div>
           {/* AI Chat */}
-          <AiBot startAi={startAi} setStartAi={setStartAi} />
+          <AiBot startAi={startAi} setNotify={setNotify} url={proposalItem?.link} setStartAi={setStartAi} />
         </div>
       }
 

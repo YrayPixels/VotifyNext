@@ -3,11 +3,12 @@ import CustomInput from "../customInput/customInput";
 import { isJson, runGenAi, scrapeProposal } from "../../requestsHandler/genAi";
 import { Brush, CleaningServices, Close } from "@mui/icons-material";
 import ChatBox from "./ChatBox";
+import { isValidUrl } from "@/requestsHandler/request";
 
 
 
 
-export default function AiBot({ setStartAi }: any) {
+export default function AiBot({ setStartAi, url, setNotify }: any) {
 
     const [messageText, setMessageText] = useState('')
     const [newText, setNewText] = useState('');
@@ -40,10 +41,23 @@ export default function AiBot({ setStartAi }: any) {
 
     useEffect(() => {
         setLoader(true);
+
+        if (!isValidUrl(url)) {
+            setLoader(false);
+            setNotify({
+                message: 'Invalid URL, please provide a url to a page,not a file or picture',
+                type: 'error'
+
+            })
+            localStorage.removeItem('mobotChatHistory');
+            return;
+            setNewText(Math.random().toString());
+
+        };
         localStorage.removeItem('mobotChatHistory');
         setNewText(Math.random().toString());
         (async () => {
-            let data = await scrapeProposal('https://www.jupresear.ch/t/jup-juice-work-group-jjwg-trial-proposal/22159');
+            let data = await scrapeProposal(url);
             console.log(data);
             setScrapedData(data);
             sendChat(`type={ProposalData} ${data} 
@@ -51,7 +65,7 @@ export default function AiBot({ setStartAi }: any) {
             `);
 
         })()
-    }, [])
+    }, [url])
 
     function sendChat(message: string) {
         setLoader(true);

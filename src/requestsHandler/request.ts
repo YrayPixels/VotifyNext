@@ -75,3 +75,17 @@ export interface ErrorResponseInt {
     errorCode: number;
 }
 
+
+export function isValidUrl(url: string) {
+    // Regex to check if URL follows typical format (protocol and domain required)
+    const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
+
+    // Extensions we want to exclude
+    const invalidExtensions = ['.pdf', '.doc', '.docx', '.xlsx', '.ppt', '.pptx', '.zip'];
+
+    // First, check if URL matches the regex pattern
+    if (!urlPattern.test(url)) return false;
+
+    // Ensure it does not end with an unwanted file extension
+    return !invalidExtensions.some(ext => url.toLowerCase().endsWith(ext));
+}

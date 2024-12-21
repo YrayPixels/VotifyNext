@@ -5,9 +5,6 @@ import { Brush, CleaningServices, Close } from "@mui/icons-material";
 import ChatBox from "./ChatBox";
 import { isValidUrl } from "@/requestsHandler/request";
 
-
-
-
 export default function AiBot({ setStartAi, url, setNotify }: any) {
 
     const [messageText, setMessageText] = useState('')

@@ -8,6 +8,8 @@ import { DaoVoting, IDL } from "../requestsHandler/DAO_IDL/dao_voting";
 import { newProposal } from "../requestsHandler/programConnector";
 import CustomInput from "./customInput/customInput";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { isValidUrl } from "@/requestsHandler/request";
+import { send } from "process";
 
 const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
@@ -50,31 +52,34 @@ export default function Main() {
     })()
   }, [publicKey, wallet, anchorWallet])
 
-  const createNewProposal = async () => {
-    if (proposalCreate.title == "" || proposalCreate.description == "" || proposalCreate.options.length == 0 || proposalCreate.externalLink == "") {
+  const sendNotification = (message: string, type: string) => {
+    setNotify({
+      message: message,
+      type: type
+    })
+    setTimeout(() => {
       setNotify({
-        message: 'All fields are required',
-        type: 'error'
+        message: "",
+        type: ''
       })
-      setTimeout(() => {
-        setNotify({
-          message: "",
-          type: ''
-        })
-      }, 2000)
+    }, 2000)
+  }
+  const createNewProposal = async () => {
+    if (!isValidUrl(proposalCreate.externalLink)) {
+      sendNotification('Invalid Url', 'error')
+      return;
+    }
+    if (proposalCreate.options.length < 2) {
+      sendNotification('At least two options are required', 'error')
+      return;
+    }
+
+    if (proposalCreate.title == "" || proposalCreate.description == "" || proposalCreate.options.length == 0 || proposalCreate.externalLink == "") {
+      sendNotification('All fields are required', 'error')
       return;
     }
     if (publicKey == null || signTransaction == null) {
-      setNotify({
-        message: 'Please connect your wallet to create proposal',
-        type: 'error'
-      })
-      setTimeout(() => {
-        setNotify({
-          message: "",
-          type: ''
-        })
-      }, 2000)
+      sendNotification("Please connect wallet", 'error')
       return;
     }
     try {
@@ -85,18 +90,12 @@ export default function Main() {
         externalLink: proposalCreate.externalLink,
         user: publicKey.toString(),
         program: anchorProgram,
-      })
-      // tx.feePayer = new PublicKey(publicKey.toString);
-      // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-      // console.log(tx);
-      // await signTransaction(tx)
+      });
+      console.log(tx);
 
-      setNotify({
-        message: 'Proposal created successfully',
-        type: 'success'
-      })
+      sendNotification('Proposal Created Successfully', 'success')
       setNewProp(false)
-      // wallet.makeRefetch()
+
     } catch (err) {
       console.log(err);
     }
@@ -156,7 +155,12 @@ export default function Main() {
             />
             <div className="px-4" >
               {proposalCreate.options.length > 0 && proposalCreate.options.map((item: any, index: number) => {
-                return <li key={index}>{item}</li>
+                return <li key={index} className="flex w-full  flex-row justify-between">{item} <span className="cursor-pointer" onClick={() => {
+                  setProposalCreate((prevState: any) => ({
+                    ...prevState, // Keep the existing state
+                    options: prevState.options.filter((option: any) => option !== item), // Add the new option to the options array
+                  }));
+                }}>X</span></li>
               })}
               <CustomInput
                 type="text"

@@ -137,7 +137,9 @@ export default function Proposals() {
                 View full Proposal
               </Link>
 
-              <button onClick={() => setStartAi(true)} className="p-3 text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
+              <button onClick={() => {
+                setStartAi(true)
+              }} className="p-3 text-[#73dca5] rounded-xl text-[14px] font-semibold border border-[#73dca5]">
                 Analyze with AI
               </button>
             </div>

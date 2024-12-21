@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GA_KEY || "");
+console.log(process.env.NEXT_PUBLIC_GA_KEY);
 
 
 export async function runGenAi(message: any) {
@@ -56,19 +57,6 @@ export const isJson = (str: any) => {
 }
 
 
-// export async function scrapeProposal(url: string) {
-//     try {
-//         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-//         const response = await fetch(proxyUrl + url);
-//         const data = await response.text();
-//         return data;
-//     } catch (error) {
-//         console.error('Error scraping the proposal:', error);
-//         return "";
-//     }
-// }
-
-
 export async function scrapeProposal(url: string) {
     const response = await fetch('/api/scrape', {
         method: 'POST',
@@ -85,11 +73,3 @@ export async function scrapeProposal(url: string) {
     const data = await response.json();
     return JSON.stringify(data.content);
 }
-
-// // URL of the page you want to scrape
-// const url = 'https://www.jupresear.ch/t/jup-juice-work-group-jjwg-trial-proposal/22159';
-
-// // Call the function to scrape the data
-// scrapeProposal(url).then((data) => {
-//     console.log(data);
-// });

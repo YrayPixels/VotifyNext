@@ -27,6 +27,7 @@ export const POST = async (req: Request) => {
 
         // Extract specific information from the page
         const extractedData = await page.evaluate(() => {
+
             // Replace this with the actual selectors and data you want to extract
             const headings: any = {};
             for (let i = 1; i <= 6; i++) {

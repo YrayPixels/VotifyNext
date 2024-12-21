@@ -50,7 +50,7 @@ export const castVote = async (index: number, program: Program, user: string, co
         [userPubkey.toBuffer()],
         program.programId
     );
-    console.log(voterBump)
+
 
     const regInstruction = await program.methods
         .registerVoter()
@@ -114,7 +114,6 @@ export const newProposal = async ({ title, description, options, externalLink, u
         program.programId
     );
 
-    console.log(proposalBump);
     const txHash = await program.methods
         .createProposal(
             new BN(uniqueId),
@@ -127,7 +126,7 @@ export const newProposal = async ({ title, description, options, externalLink, u
             dao: new PublicKey("8fEQu9YTUjMhNsYF7bGTn8WYdewhhrMSPQxyCbHmNkNJ"),
             proposal: proposalPDA,
             user: new PublicKey(user),
-        }).rpc()
+        }).rpc();
 
     return txHash;
 }

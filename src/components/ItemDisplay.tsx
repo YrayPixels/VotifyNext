@@ -16,9 +16,10 @@ export default function ItemDisplay({ items }: any) {
     title: string,
     description: string,
     status: string,
+    totalVotes: number[],
     results: number[],
   ) {
-    return { id, title, description, status, results };
+    return { id, title, description, status, totalVotes, results };
   }
   const [rows, setRows] = useState<any>([])
 
@@ -27,7 +28,7 @@ export default function ItemDisplay({ items }: any) {
     if (items.length > 0) {
       setRows([]);
       for (const item of items) {
-        let data = createData(item?.publicKey?.toBase58(), item?.account.title, item?.account?.description, item?.account?.finished ? "Completed" : "Ongoing", item?.account.voteCounts)
+        let data = createData(item?.publicKey?.toBase58(), item?.account.title, item?.account?.description, item?.account?.finished ? "Completed" : "Ongoing", item?.account.voteCounts, item?.account.voteCounts)
         setRows((prevRows: any) => [...prevRows, data])
       }
     }
@@ -38,6 +39,7 @@ export default function ItemDisplay({ items }: any) {
     <div className='text-[14px] '>
       <div className='font-bold text-[14px] flex flex-row justify-between'>
         <p>Proposals</p>
+
         {/* <Link to={`/view-all`}>View all</Link> */}
       </div>
       <TableContainer component={Paper} color="black" >
@@ -47,21 +49,23 @@ export default function ItemDisplay({ items }: any) {
               <TableCell sx={{ fontSize: 12 }}>Title</TableCell>
               <TableCell sx={{ fontSize: 12 }} align="left">Description</TableCell>
               <TableCell sx={{ fontSize: 12 }} align="left">Status</TableCell>
+              <TableCell sx={{ fontSize: 12 }} align="left">Total Votes</TableCell>
               <TableCell sx={{ fontSize: 12 }} align="left">Results</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row: any, index: number) => (
               <TableRow
+                onClick={() => location.href = `proposal-page?id=${row.id}`}
                 key={row.title + index.toString()}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ fontSize: 12 }} component="th" scope="row">
-
-                  <Link href={`proposal-page?id=${row.id}`}>  {row.title} </Link>
+                  {row.title} 
                 </TableCell>
                 <TableCell sx={{ fontSize: 12 }} align="left">{row.description}</TableCell>
                 <TableCell sx={{ fontSize: 12 }} align="left">{row.status}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} align="left">{row.totalVotes.length}</TableCell>
                 <TableCell sx={{ fontSize: 12 }} align="left">{row.results.length}</TableCell>
               </TableRow>
             ))}

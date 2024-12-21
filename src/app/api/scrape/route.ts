@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
         browser = await puppeteer.launch({
             args: chromium.args,
             executablePath: await chromium.executablePath,
-            headless: true,
+            headless: true
         });
         const page = await browser.newPage();
 

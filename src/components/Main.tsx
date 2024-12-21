@@ -46,9 +46,7 @@ export default function Main() {
       const program = new Program<DaoVoting>(IDL, programId, anchorProvider);
       let proposals = await program?.account?.proposal.all();
       setItems(proposals);
-      console.log(proposals);
       setAnchorProgram(program)
-      console.log(proposals);
     })()
   }, [publicKey, wallet, anchorWallet])
 
@@ -91,13 +89,12 @@ export default function Main() {
         user: publicKey.toString(),
         program: anchorProgram,
       });
-      console.log(tx);
 
       sendNotification('Proposal Created Successfully', 'success')
       setNewProp(false)
 
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
 
   }
@@ -136,8 +133,8 @@ export default function Main() {
       <ItemDisplay items={items} />
 
       {newProp &&
-        <div className="absolute top-0 h-[600px] w-screen left-0 flex flex-col justify-center items-center bg-black/95">
-          <div className="border border-[#73dca5] w-10/12 w-lg-[50%] rounded-xl p-4">
+        <div className="absolute top-0 h-screen w-screen left-0 flex flex-col justify-center items-center bg-black/95">
+          <div className="border border-[#73dca5] w-10/12 md:w-5/12 lg:w-6/12 rounded-xl p-4">
             <CustomInput
               type="text"
               placeholder="enter proposal title"

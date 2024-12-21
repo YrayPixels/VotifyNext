@@ -37,7 +37,7 @@ export default function Main() {
         ownerAddress: walletAddress,
         page: 1,
       });
-      console.log(response)
+
     })()
   }, [walletAddress]);
 

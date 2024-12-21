@@ -1,4 +1,3 @@
-// pages/api/scrape.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
 
@@ -37,8 +36,6 @@ export const POST = async (req: Request) => {
             const paragraphs = Array.from(document.querySelectorAll('p')).map(p => p.innerText);
             return { headings, paragraphs };
         });
-        console.log(extractedData);
-
 
         return Response.json({ content: extractedData }, {});
 

@@ -66,7 +66,7 @@ export default function ChatBox({ newText, loader }: any) {
                 loader && <>
                     <div className='flex items-center mb-3'>
                         <div className='me-2'>
-                            <Avatar alt='MDBOT' src="../images/robo.png" />
+                            <Avatar alt='Votify Ai' src="../votify.jpeg" />
                         </div>
                         <div style={{ width: '300px', height: '100%', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', borderBottomLeftRadius: '10px' }} className='p-2 shadow'>
                             <p>Thinking ...

@@ -180,7 +180,7 @@ export default function Proposals() {
       {startAi &&
         <div>
           {/* AI Chat */}
-          <AiBot startAi={startAi} setNotify={setNotify} url={proposalItem?.link} setStartAi={setStartAi} />
+          <AiBot proposalTitle={proposalItem?.title} startAi={startAi} setNotify={setNotify} url={proposalItem?.link} setStartAi={setStartAi} />
         </div>
       }
 

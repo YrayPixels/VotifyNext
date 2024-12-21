@@ -27,7 +27,7 @@ const puppeteer = require('puppeteer');
         const paragraphs = Array.from(document.querySelectorAll('p')).map(p => p.innerText);
         return { headings, paragraphs };
     });
-    console.log(extractedData);
+    // console.log(extractedData);
 
 
     // return Response.json({ content: extractedData }, {});

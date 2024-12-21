@@ -5,7 +5,7 @@ import { Brush, CleaningServices, Close } from "@mui/icons-material";
 import ChatBox from "./ChatBox";
 import { isValidUrl } from "@/requestsHandler/request";
 
-export default function AiBot({ setStartAi, url, setNotify }: any) {
+export default function AiBot({ setStartAi, url, setNotify, proposalTitle, }: any) {
 
     const [messageText, setMessageText] = useState('')
     const [newText, setNewText] = useState('');
@@ -55,7 +55,7 @@ export default function AiBot({ setStartAi, url, setNotify }: any) {
         setNewText(Math.random().toString());
         (async () => {
             let data = await scrapeProposal(url);
-            console.log(data);
+
             setScrapedData(data);
             sendChat(`type={ProposalData} ${data} 
             help me analyse this proposal and help me make informed decisions about what to do;
@@ -66,14 +66,17 @@ export default function AiBot({ setStartAi, url, setNotify }: any) {
 
     function sendChat(message: string) {
         setLoader(true);
-        // if (message.includes('clear') || message.includes('Clear')) {
-        //     localStorage.removeItem('mobotChatHistory');
-        //     setNewText(Math.random().toString());
-        //     return 0
-        // }
         if (!message.includes("type={ProposalData")) {
             messageCreatorObj.createsNewUserMessage(message)
-        }
+        } 
+        const proposalData = localStorage.getItem('scrapedData');
+        const proposalQuestions = `I need help with this proposal ${proposalData},
+        However take my message which is this most important- respond to this question ${message} if it is relating to the proposal then answer based on the proposal.
+        make your answer brief  and coincise to help me understand better if it is the proposal related, and flow freely if you are answering the message alone.
+
+        Please follow this instructions strictly.
+        `;
+
 
         function handleResponse(response: any) {
             try {
@@ -114,21 +117,23 @@ export default function AiBot({ setStartAi, url, setNotify }: any) {
                     2000);
             }
         }
-        runGenAi(message).then(handleResponse);
+        runGenAi(proposalQuestions).then(handleResponse);
         setMessageText('');
     }
     const addChat = () => {
         sendChat(messageText);
     }
     return (
-        <div className="relative bg-black/50 h-[500px] overflow-hidden rounded-xl">
+        <div className="absolute w-screen h-screen top-0 left-0 bg-black/50 p-10 ">
+            <div className="relative bg-black h-[100%] overflow-hidden rounded-xl">
 
-            <div className='bg-back p-3 flex justify-end items-center w-100' style={{ zIndex: 999999, height: '50px', position: 'sticky', top: 0, }}>
+                <div className='bg-back p-3 flex justify-between items-center w-100' style={{ zIndex: 999999, height: '50px', position: 'sticky', top: 0, }}>
+                    <div className="font-bold">{proposalTitle}</div>
                 <div className='text-white' onClick={() => setStartAi(false)}>
                     <Close />
                 </div>
             </div>
-            <div className='' style={{ overflowY: 'scroll', top: 0, height: '400px', position: 'relative', }}>
+                <div className='py-[20px]' style={{ overflowY: 'scroll', top: 0, height: '82%', position: 'relative', }}>
                 <ChatBox newText={newText} loader={loader} sendChat={sendChat} />
             </div>
 
@@ -153,6 +158,7 @@ export default function AiBot({ setStartAi, url, setNotify }: any) {
 
             </div>
 
+            </div>
         </div>
     );
 }

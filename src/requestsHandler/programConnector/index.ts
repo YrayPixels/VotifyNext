@@ -24,7 +24,7 @@ export const fetchProposals = async (program: Program) => {
 //         [userPubkey.toBuffer()],
 //         program.programId
 //     );
-//     console.log(voterBump)
+//   
 //     const regInstruction = await program.methods
 //         .registerVoter()
 //         .accounts({

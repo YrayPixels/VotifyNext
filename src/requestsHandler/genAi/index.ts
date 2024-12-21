@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GA_KEY || "");
-console.log(process.env.NEXT_PUBLIC_GA_KEY);
+
 
 
 export async function runGenAi(message: any) {
@@ -71,5 +71,6 @@ export async function scrapeProposal(url: string) {
     }
 
     const data = await response.json();
+    localStorage.setItem('scrapedData', JSON.stringify(data.content));
     return JSON.stringify(data.content);
 }

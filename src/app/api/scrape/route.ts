@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
+import chromium from 'chrome-aws-lambda';
 
 
 export const POST = async (req: Request) => {
@@ -15,7 +16,9 @@ export const POST = async (req: Request) => {
     let browser;
     try {
         browser = await puppeteer.launch({
-            headless: true
+            args: chromium.args,
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless,
         });
         const page = await browser.newPage();
 
@@ -26,7 +29,6 @@ export const POST = async (req: Request) => {
 
         // Extract specific information from the page
         const extractedData = await page.evaluate(() => {
-
             // Replace this with the actual selectors and data you want to extract
             const headings: any = {};
             for (let i = 1; i <= 6; i++) {
@@ -37,6 +39,7 @@ export const POST = async (req: Request) => {
             return { headings, paragraphs };
         });
 
+        await browser.close();
         return Response.json({ content: extractedData }, {});
 
 

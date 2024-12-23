@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GA_KEY || "");
 
 export async function runGenAi(message: any) {
     // For text-only input, use the gemini-pro model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-8b" });
 
     const json_history = [
         {
